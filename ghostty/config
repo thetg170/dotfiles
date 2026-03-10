@@ -1,0 +1,37 @@
+# Ghostty default profile for macOS when using Bash.
+# Reload config with Cmd+Shift+, in Ghostty.
+
+theme = Gruvbox Dark
+
+font-family = UbuntuMono Nerd Font
+font-size = 20
+
+copy-on-select = true
+
+# Run Bash as a login shell so ~/.bash_profile and ~/.bashrc are loaded.
+command = /bin/bash --login
+maximize = true
+
+# Use Ghostty shell integration explicitly for Bash.
+shell-integration = bash
+
+# Make Option behave as Alt for Bash shortcuts (Alt+f, Alt+b, Alt+d, ...).
+macos-option-as-alt = true
+
+# For transparency
+background-opacity = 0.88
+
+# Cursor preferences
+cursor-style = "bar"
+cursor-style-blink = true
+shell-integration-features = no-cursor
+
+# Cursor shader effects (trail/boom/ripple)
+# Keep this on to avoid freeze on focus changes with line cursor.
+custom-shader-animation = always
+custom-shader = shaders/cursor_warp.glsl
+
+# Keep titlebar visible enough to drag/move window easily.
+macos-titlebar-style = "hidden"
+macos-titlebar-proxy-icon = "hidden"
+
