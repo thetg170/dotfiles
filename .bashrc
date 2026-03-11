@@ -68,6 +68,8 @@ alias l='ls -CF'
 alias ..='cd ..'
 alias ...='cd ../..'
 
+eval "$(starship init bash)"
+
 # ---- Bash auto-completion ----
 # Homebrew bash-completion needs non-POSIX mode.
 if shopt -oq posix; then
