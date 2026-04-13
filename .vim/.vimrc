@@ -1,5 +1,7 @@
 set nocompatible
 
+set relativenumber
+
 filetype on
 
 filetype plugin on

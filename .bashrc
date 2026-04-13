@@ -126,3 +126,8 @@ done
 [[ -f "$HOME/.bashrc.local" ]] && . "$HOME/.bashrc.local"
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+export PATH="$JAVA_HOME/bin:$PATH"
+export PYSPARK_PYTHON=python3
+export SPARK_HOME=/opt/spark/spark-3.5.2-bin-hadoop3
+export PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH"
