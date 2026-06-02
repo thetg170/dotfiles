@@ -6,7 +6,6 @@ plugins=(
   git
   zsh-autosuggestions
   fast-syntax-highlighting
-  zsh-autocomplete
 )
 
 export PATH="$HOME/.local/bin:$PATH"
