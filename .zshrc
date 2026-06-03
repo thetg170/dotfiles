@@ -12,10 +12,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 
-# Auto-attach or create a tmux session when opening a terminal
-if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
-  tmux attach -t main 2>/dev/null || tmux new-session -s main
-fi
 
 # Navigation
 alias work="cd ~/work"
