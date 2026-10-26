@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal macOS dotfiles repo living at `~/work/dotfiles`. All configs are **symlinked** into their expected locations — edits here take effect immediately (no deploy step needed).
+Personal macOS dotfiles repo living at `~/Developer/dotfiles`. All configs are **symlinked** into their expected locations — edits here take effect immediately (no deploy step needed).
 
 ## Symlink map
 

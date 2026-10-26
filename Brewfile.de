@@ -1,0 +1,40 @@
+# Optional DE profile. Install with make setup-de.
+brew "openjdk@17"
+brew "btop"
+brew "tree"
+brew "wget"
+brew "tailspin"
+brew "openfortivpn"
+brew "pandoc"
+brew "poppler"
+
+# Preserve manually installed apps. On a fresh Mac, install missing apps.
+def existing_app?(name)
+  ["/Applications", File.join(Dir.home, "Applications")].any? do |directory|
+    File.directory?(File.join(directory, "#{name}.app"))
+  end
+end
+
+cask "orbstack" unless existing_app?("OrbStack")
+cask "visual-studio-code" unless existing_app?("Visual Studio Code")
+cask "dbeaver-community" unless existing_app?("DBeaver")
+cask "drawio" unless existing_app?("draw.io")
+cask "obsidian" unless existing_app?("Obsidian")
+cask "keka" unless existing_app?("Keka")
+
+# Browsers: Brave for daily use; Chrome for Claude and ChatGPT.
+cask "brave-browser" unless existing_app?("Brave Browser")
+cask "google-chrome" unless existing_app?("Google Chrome")
+
+# Selected personal apps and macOS utilities.
+cask "openkey" unless existing_app?("OpenKey")
+cask "caffeine" unless existing_app?("Caffeine")
+cask "macs-fan-control" unless existing_app?("Macs Fan Control")
+cask "telegram" unless existing_app?("Telegram")
+cask "zalo" unless existing_app?("Zalo")
+cask "anki" unless existing_app?("Anki")
+cask "iina" unless existing_app?("IINA")
+
+# Astro is intentionally manual: the core formula pulls in Podman.
+# Excluded: Plotly Studio, Excel, Amethyst, abctl, podman, tnftp,
+# libomp and graphviz. Dependencies of other tools are managed by Homebrew.

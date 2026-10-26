@@ -5,14 +5,14 @@ font-size = 20
 
 copy-on-select = true
 
-# 1. Đổi sang dùng Zsh làm login shell
+# Zsh login shell loads ~/.zprofile and ~/.zshrc.
 command = /bin/zsh --login
 maximize = true
 
-# 2. ĐỔI DÒNG NÀY: Chuyển shell-integration sang zsh (hoặc để "detect")
+# Match shell integration to the configured shell.
 shell-integration = zsh
 
-# 3. ĐỔI DÒNG NÀY: Đổi Option key hỗ trợ các shortcut của Zsh
+# Option acts as Alt for shell shortcuts, including fzf's Alt+c.
 macos-option-as-alt = true
 
 # For transparency
@@ -24,9 +24,10 @@ cursor-style-blink = true
 shell-integration-features = no-cursor
 
 # Cursor shader effects (trail/boom/ripple)
-custom-shader-animation = always
-custom-shader = shaders/cursor_warp.glsl
+# Animate focused terminals only to reduce background rendering.
+custom-shader-animation = true
+custom-shader = effects/cursor_warp.glsl
 
-# Keep titlebar visible enough to drag/move window easily.
+# Keep the existing hidden titlebar and maximized-window layout.
 macos-titlebar-style = "hidden"
 macos-titlebar-proxy-icon = "hidden"

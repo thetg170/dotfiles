@@ -16,6 +16,22 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+  desc = "Use deliberate-practice settings in LeetCode scratch buffers",
+  group = vim.api.nvim_create_augroup("LeetCodeKata", { clear = true }),
+  pattern = { "*/kata.py", "*/buggy.py" },
+  callback = function(event)
+    local directory = vim.fn.fnamemodify(event.file, ":p:h")
+    if vim.fn.filereadable(directory .. "/meta.toml") == 0 then
+      return
+    end
+
+    vim.b[event.buf].completion = false
+    vim.b[event.buf].leetcode_kata = true
+    vim.opt_local.colorcolumn = "100"
+  end,
+})
+
 vim.api.nvim_create_autocmd("VimEnter", {
   group = vim.api.nvim_create_augroup("SingleWindowOnStart", { clear = true }),
   callback = function()

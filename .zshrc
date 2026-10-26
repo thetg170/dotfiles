@@ -1,21 +1,43 @@
-export ZSH="$HOME/.oh-my-zsh"
+# Keep user tools first and avoid PATH growth when reloading the config.
+typeset -U path PATH
+path=("$HOME/.local/bin" "$HOME/bin" $path)
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  path=("$HOME/.local/bin" /opt/homebrew/bin /opt/homebrew/sbin $path)
+elif [[ -x /usr/local/bin/brew ]]; then
+  path=("$HOME/.local/bin" /usr/local/bin /usr/local/sbin $path)
+fi
+export PATH
+
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
 
 ZSH_THEME=""
 
-plugins=(
-  git
-  zsh-autosuggestions
-  fast-syntax-highlighting
-)
+plugins=(git)
+for plugin in zsh-autosuggestions fast-syntax-highlighting; do
+  [[ -d "${ZSH_CUSTOM:-$ZSH/custom}/plugins/$plugin" ]] && plugins+=("$plugin")
+done
+unset plugin
+[[ -r "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
-export PATH="$HOME/.local/bin:$PATH"
+# Shared history for terminal tabs and tmux panes. Leading spaces skip saving.
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
 
-source $ZSH/oh-my-zsh.sh
-
+if (( $+commands[nvim] )); then
+  export EDITOR="${EDITOR:-nvim}"
+else
+  export EDITOR="${EDITOR:-vim}"
+fi
+export VISUAL="${VISUAL:-$EDITOR}"
+export PAGER="${PAGER:-less}"
+bindkey -e
 
 # Navigation
+typeset -g DOTFILES_DIR="${${(%):-%x}:A:h}"
 alias work="cd ~/work"
-alias dot="cd ~/work/dotfiles"
+alias dot='cd -- "$DOTFILES_DIR"'
 alias vntt="cd ~/Developer/Vntt"
 alias pdev="cd ~/Developer/Personal"
 alias box="cd ~/Developer/Sandbox"
@@ -33,8 +55,37 @@ alias glg="git log --oneline --graph --decorate"
 alias py="python3"
 alias pip="pip3"
 
+# Keep the original ls/cat commands; use these when extra detail helps.
+if (( $+commands[eza] )); then
+  alias ll='eza -l --group-directories-first --icons=auto'
+  alias la='eza -la --group-directories-first --icons=auto'
+  alias lt='eza --tree --level=2 --group-directories-first --icons=auto'
+fi
+(( $+commands[lazygit] )) && alias lg='lazygit'
+
+# Ctrl+r: history; Ctrl+t: insert file paths; Alt+c: choose a directory.
+if (( $+commands[fzf] )); then
+  export FZF_DEFAULT_OPTS='--height=45% --layout=reverse --border --info=inline'
+  if (( $+commands[rg] )); then
+    export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git" -g "!node_modules" -g "!.venv" -g "!__pycache__"'
+    export FZF_DEFAULT_COMMAND="$FZF_CTRL_T_COMMAND"
+  fi
+  if (( $+commands[bat] )); then
+    export FZF_CTRL_T_OPTS='--preview "bat --color=always --style=numbers --line-range=:200 -- {}"'
+  fi
+  source <(fzf --zsh)
+fi
+
+# z/zi learn visited directories; cd retains its normal behavior.
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+
 # uv completions
 command -v uv &>/dev/null && eval "$(uv generate-shell-completion zsh)"
 
 # Starship prompt
 command -v starship &>/dev/null && eval "$(starship init zsh)"
+
+# Machine-specific paths, environment and overrides stay outside the repo.
+if [[ -r "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
+fi

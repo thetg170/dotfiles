@@ -1,7 +1,9 @@
 return {
   {
     "tris203/precognition.nvim",
-    opts = {},
+    opts = {
+      startVisible = false,
+    },
     event = "VeryLazy",
   },
   {

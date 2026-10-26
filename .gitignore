@@ -1,2 +1,8 @@
+# Legacy downloaded shaders; the active shader lives in ghostty/effects/.
 ghostty/shaders/
 nvim.log
+.DS_Store
+*.backup.*
+.zshrc.local
+.bashrc.local
+Brewfile.lock.json
