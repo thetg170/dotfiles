@@ -49,6 +49,22 @@ alias dot='cd -- "$DOTFILES_DIR"'
 alias vntt="cd ~/Developer/Vntt"
 alias pdev="cd ~/Developer/Personal"
 alias box="cd ~/Developer/Sandbox"
+dev() {
+  "$DOTFILES_DIR/scripts/dev.sh" "$@"
+}
+airead() {
+  codex --sandbox read-only "$@"
+}
+aireview() {
+  if (( $# == 0 )); then
+    codex review --uncommitted
+  elif (( $# == 1 )); then
+    codex review --base "$1"
+  else
+    print -u2 'Usage: aireview [base-branch]'
+    return 2
+  fi
+}
 
 # Git
 alias gst="git status"

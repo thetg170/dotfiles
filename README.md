@@ -54,6 +54,9 @@ Script không thay thế Astro hiện tại của bạn.
 
 ## Lệnh quản lý
 
+Tra nhanh trong [COMMANDS.md](COMMANDS.md). Quy trình Neovim + tmux + AI nằm
+trong [WORKFLOW.md](WORKFLOW.md), gồm hỏi code theo selection và review trước commit.
+
 | Lệnh tại thư mục repo | Công dụng |
 |---|---|
 | `make setup` | Cài dependency còn thiếu và tạo symlink |

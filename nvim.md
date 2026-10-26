@@ -2,6 +2,19 @@
 
 **Leader = `Space`**
 
+## AI context
+
+| Key (Normal hoặc Visual) | Action |
+|---|---|
+| `<leader>ay` | Copy path + line range + code |
+| `<leader>ap` | Copy reference, không kèm code |
+| `<leader>ae` | Copy context + prompt giải thích chỉ đọc |
+| `<leader>ar` | Copy context + prompt review chỉ đọc |
+
+Normal dùng dòng hiện tại; Visual dùng các dòng đang chọn. Copy vào clipboard
+macOS, không gửi AI hoặc đổi pane. Chuyển bằng tmux prefix rồi `l`, paste `Cmd+v`,
+xem lại và gửi. [Workflow đầy đủ](WORKFLOW.md).
+
 ---
 
 ## File

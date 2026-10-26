@@ -1,4 +1,4 @@
-.PHONY: setup setup-de setup-python link dry-run check
+.PHONY: setup setup-de setup-python link dry-run check check-workflow
 
 setup:
 	./scripts/bootstrap.sh
@@ -19,3 +19,7 @@ dry-run:
 
 check:
 	./scripts/check.sh
+
+check-workflow:
+	nvim --headless -u NONE -l tests/ai_context.lua
+	/bin/bash tests/workspace.sh

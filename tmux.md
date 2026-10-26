@@ -2,6 +2,10 @@
 
 **Prefix = `Ctrl+Space`**
 
+`dev [đường-dẫn-hoặc-tên-zoxide]` mở workspace project với Neovim + Codex và hai
+window shell `check`, `logs`. Gọi lại để quay về session cũ.
+Xem [WORKFLOW.md](WORKFLOW.md) và [COMMANDS.md](COMMANDS.md).
+
 ---
 
 ## Session
@@ -41,6 +45,7 @@
 | `prefix h/j/k/l` | Move between panes |
 | `prefix o` | Cycle to next pane |
 | `prefix ;` | Last pane |
+| `prefix z` | Zoom/unzoom pane |
 | `prefix x` | Kill pane (confirm) |
 | `prefix !` | Break pane into new window |
 | `prefix H/J/K/L` | Resize pane (repeatable) |
