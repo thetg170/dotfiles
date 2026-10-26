@@ -1,0 +1,2 @@
+# Prefer uv-managed runtimes; explicit project settings can override this.
+python-preference = "managed"

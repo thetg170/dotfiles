@@ -3,7 +3,7 @@
 brew "gh"
 brew "neovim"
 brew "node"
-brew "python@3.14"
+# Development Python versions are installed by uv, not pinned to Homebrew.
 brew "starship"
 brew "tmux"
 brew "uv"

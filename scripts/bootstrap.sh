@@ -40,5 +40,6 @@ clone_if_missing https://github.com/zsh-users/zsh-autosuggestions.git "$omz_cust
 clone_if_missing https://github.com/zdharma-continuum/fast-syntax-highlighting.git "$omz_custom_dir/plugins/fast-syntax-highlighting"
 
 "$REPO_ROOT/scripts/link.sh"
+"$REPO_ROOT/scripts/setup-python.sh"
 "$REPO_ROOT/scripts/check.sh"
 printf '\nSetup complete. Open a new Ghostty tab, then run:\n  %s/scripts/check.sh\n' "$REPO_ROOT"

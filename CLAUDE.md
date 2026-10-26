@@ -15,7 +15,9 @@ Personal macOS dotfiles repo living at `~/Developer/dotfiles`. All configs are *
 | `.vim/.vimrc` | `~/.vimrc` |
 | `nvim/` | `~/.config/nvim` |
 | `ghostty/config` | `~/.config/ghostty/config` |
-| `ghostty/shaders/` | `~/.config/ghostty/shaders` |
+| `ghostty/effects/` | `~/.config/ghostty/effects` |
+| `uv/uv.toml` | `~/.config/uv/uv.toml` |
+| `uv/python-version` | `~/.config/uv/.python-version` |
 
 Karabiner does **not** support symlinks; its JSON files must be copied manually (see `karabiner/install.txt`).
 
@@ -36,9 +38,22 @@ Built on [LazyVim](https://www.lazyvim.org) + [lazy.nvim](https://github.com/fol
 
 Prefix: `Ctrl+Space`. Copy mode uses Emacs keys. Reload config: `<prefix> r`.
 
-## Dependencies (must be pre-installed)
+## Python
 
-- Oh My Zsh + plugins: `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fast-syntax-highlighting`, `zsh-autocomplete`
-- `tmux`, `neovim`, `ghostty`
-- `uv` (Python toolchain at `~/.local/bin`)
-- `brew install --cask karabiner-elements` for keyboard remapping
+Homebrew owns the preferred uv executable; uv owns development Python versions.
+The global default is Python 3.12; each project's `.python-version` takes priority.
+`make setup-python` links the uv config and installs the default runtime without
+upgrading existing Python installations. Do not remove other runtimes automatically.
+
+`pynew <new-directory>` runs `scripts/new-python.sh`, copies `templates/python`,
+creates a local Git repository, resolves `uv.lock`, and installs a project `.venv`.
+It refuses existing paths. See `Python.md` for usage and migration guidance.
+Neovim uses project-local Python, basedpyright, and Ruff when available, with
+editor-installed language tools as a fallback. Keep dependencies project-specific.
+
+## Dependencies
+
+Install Command Line Tools and Homebrew first, then run `make setup`.
+The bootstrap script installs Brewfile packages, Oh My Zsh, zsh-autosuggestions,
+and fast-syntax-highlighting; links dotfiles; sets up Python; and runs checks.
+`make setup-de` installs the optional app/DE profile. No cleanup or autoremove.

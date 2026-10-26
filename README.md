@@ -58,6 +58,7 @@ Script không thay thế Astro hiện tại của bạn.
 |---|---|
 | `make setup` | Cài dependency còn thiếu và tạo symlink |
 | `make setup-de` | Cài profile DE tùy chọn, giữ nguyên app đã có |
+| `make setup-python` | Thiết lập Python 3.12 mặc định và config uv |
 | `make dry-run` | Xem các link/backup dự kiến, chưa sửa file |
 | `make link` | Chỉ tạo symlink, không cài package |
 | `make check` | Kiểm tra command, plugin, symlink, shader và cú pháp config |
@@ -69,7 +70,7 @@ Không có script nào tự xóa backup.
 
 `make check` kiểm tra tmux trong server riêng, không reload hay đóng session đang dùng.
 Nó không đo hiệu năng GPU và không cài/nâng cấp plugin Neovim.
-Ngoài kiểm tra command có tồn tại, script chạy thử Node, npm, Python 3.14 và Codex
+Ngoài kiểm tra command có tồn tại, script chạy thử Node, npm, Python 3.12 do uv quản lý và Codex
 (nếu đã cài) bằng `--version` để phát hiện lỗi thiếu thư viện động. `make setup`
 và `make setup-de` cũng chạy kiểm tra sau khi hoàn tất cài đặt.
 
@@ -87,6 +88,26 @@ make check
 Lệnh reinstall dùng phiên bản Node hiện tại của formula Homebrew, có thể khác
 major version đã cài trước đó. Không tạo symlink giả giữa các bản dylib khác phiên
 bản; xem [hướng dẫn Homebrew](https://docs.brew.sh/Common-Issues).
+
+## Python development
+
+Python dev dùng uv của Homebrew, Python 3.12 do uv quản lý, và `.venv` riêng cho
+từng project. Bản uv cũ ở `~/.local/bin` vẫn được giữ, nhưng PATH ưu tiên bản
+Homebrew. Python 3.14 của Homebrew cũng không bị gỡ; setup không còn yêu cầu nó.
+
+```sh
+make setup-python                  # Thiết lập Python mặc định và config uv
+# Mở tab Zsh mới, hoặc chạy: exec zsh -l
+pynew ~/Developer/Personal/my-pipeline
+cd ~/Developer/Personal/my-pipeline
+make run
+make check
+```
+
+`pynew` tạo project mới, môi trường, lockfile, cấu hình VS Code và CI GitHub
+Actions. Không chạy lên project đã tồn tại. Alias `pip=pip3` được bỏ để tránh
+cài nhầm vào Python hệ thống. Dùng `uv add` và `uv run` trong project.
+Xem [hướng dẫn Python](Python.md) về project cũ, notebook, editor và workflow DE.
 
 ## Dùng các công cụ mới
 
@@ -189,6 +210,8 @@ Bash cũ; các tích hợp mới trong hướng dẫn này dành cho Zsh.
 | `nvim/` | `~/.config/nvim` |
 | `ghostty/config` | `~/.config/ghostty/config` |
 | `ghostty/effects/` | `~/.config/ghostty/effects` |
+| `uv/uv.toml` | `~/.config/uv/uv.toml` |
+| `uv/python-version` | `~/.config/uv/.python-version` |
 
 Nếu đã đặt `XDG_CONFIG_HOME`, script dùng thư mục đó thay cho `~/.config`.
 `DOTFILES_TARGET_HOME` và `DOTFILES_CONFIG_HOME` có thể trỏ tới thư mục tạm để

@@ -6,6 +6,14 @@ if [[ -x /opt/homebrew/bin/brew ]]; then
 elif [[ -x /usr/local/bin/brew ]]; then
   path=("$HOME/.local/bin" /usr/local/bin /usr/local/sbin $path)
 fi
+# Prefer the Homebrew-managed uv/uvx without changing Python's PATH priority.
+for uv_bin_dir in /opt/homebrew/opt/uv/bin /usr/local/opt/uv/bin; do
+  if [[ -x "$uv_bin_dir/uv" ]]; then
+    path=("$uv_bin_dir" $path)
+    break
+  fi
+done
+unset uv_bin_dir
 export PATH
 
 export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
@@ -53,7 +61,10 @@ alias glg="git log --oneline --graph --decorate"
 
 # Python
 alias py="python3"
-alias pip="pip3"
+unalias pip 2>/dev/null
+pynew() {
+  "$DOTFILES_DIR/scripts/new-python.sh" "$@"
+}
 
 # Keep the original ls/cat commands; use these when extra detail helps.
 if (( $+commands[eza] )); then

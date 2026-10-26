@@ -1,4 +1,4 @@
-.PHONY: setup setup-de link dry-run check
+.PHONY: setup setup-de setup-python link dry-run check
 
 setup:
 	./scripts/bootstrap.sh
@@ -6,6 +6,10 @@ setup:
 setup-de:
 	HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_AUTOREMOVE=1 brew bundle install --file=./Brewfile.de --no-upgrade
 	./scripts/check.sh
+
+setup-python:
+	./scripts/link.sh
+	./scripts/setup-python.sh
 
 link:
 	./scripts/link.sh

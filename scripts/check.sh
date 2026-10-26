@@ -12,13 +12,24 @@ for tool in brew git gh zsh nvim tmux starship uv rg zoxide fzf lazygit bat eza;
 done
 
 # A command can exist on PATH while dyld cannot load its shared libraries.
-for tool in node npm python3.14; do
+for tool in node npm; do
   if command -v "$tool" >/dev/null 2>&1 && "$tool" --version >/dev/null; then
     ok "$tool runtime"
   else
     fail "$tool runtime (run $tool --version to inspect the error)"
   fi
 done
+uv_bin="$(dotfiles_uv)" || uv_bin=''
+if [[ -n "$uv_bin" ]] && "$uv_bin" --version; then
+  python_bin="$("$uv_bin" python find --managed-python --system --offline 3.12)" || python_bin=''
+  if [[ -n "$python_bin" ]] && "$python_bin" -c 'import sys; assert sys.version_info[:2] == (3, 12)'; then
+    ok "uv-managed Python 3.12 ($python_bin)"
+  else
+    fail 'uv-managed Python 3.12 (run make setup-python)'
+  fi
+else
+  fail 'uv runtime'
+fi
 if command -v codex >/dev/null 2>&1; then
   if codex --version >/dev/null; then ok 'codex runtime'; else fail 'codex runtime'; fi
 fi
@@ -35,7 +46,7 @@ dotfiles_links check_link
 for file in .zprofile .zshrc; do
   if /bin/zsh -n "$REPO_ROOT/$file"; then ok "$file syntax"; else fail "$file syntax"; fi
 done
-for file in .bash_profile .bashrc scripts/common.sh scripts/link.sh scripts/bootstrap.sh scripts/check.sh; do
+for file in .bash_profile .bashrc scripts/*.sh; do
   if /bin/bash -n "$REPO_ROOT/$file"; then ok "$file syntax"; else fail "$file syntax"; fi
 done
 
