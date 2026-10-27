@@ -33,6 +33,11 @@ return {
         basedpyright = {
           mason = vim.env.DOTFILES_DEVCONTAINER ~= "1",
           cmd = server_command("basedpyright-langserver", { "--stdio" }),
+          settings = {
+            basedpyright = {
+              analysis = { typeCheckingMode = "standard" },
+            },
+          },
           before_init = function(_, config)
             local python = vim.env.DOTFILES_DEVCONTAINER == "1" and vim.fn.exepath("python3")
               or project_executable(config.root_dir, "python")

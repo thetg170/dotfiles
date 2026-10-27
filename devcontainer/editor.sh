@@ -15,4 +15,4 @@ if [ "${1:-}" = --command ]; then
   shift
   exec "$@"
 fi
-exec nvim .
+exec nvim

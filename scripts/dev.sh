@@ -96,7 +96,7 @@ else
   if [[ "$container_editor" == 1 ]]; then
     "${tmux_cmd[@]}" new-window -d -t "$session:" -n edit -c "$project_dir" "$editor_command"
   else
-    "${tmux_cmd[@]}" new-window -d -t "$session:" -n edit -c "$project_dir" nvim .
+    "${tmux_cmd[@]}" new-window -d -t "$session:" -n edit -c "$project_dir" nvim
   fi
   "${tmux_cmd[@]}" new-window -d -t "$session:" -n shell -c "$project_dir"
   "${tmux_cmd[@]}" select-window -t "$session:review"

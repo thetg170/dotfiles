@@ -20,6 +20,7 @@ dotfiles_links() {
   # Lazygit uses Application Support by default on macOS, even without XDG_CONFIG_HOME.
   if [[ "$(uname -s)" == Darwin ]]; then
     "$callback" "$REPO_ROOT/lazygit/config.yml" "$DOTFILES_TARGET_HOME/Library/Application Support/lazygit/config.yml"
+    "$callback" "$REPO_ROOT/hammerspoon/init.lua" "$DOTFILES_TARGET_HOME/.hammerspoon/init.lua"
   fi
   "$callback" "$REPO_ROOT/bat/config" "$DOTFILES_CONFIG_HOME/bat/config"
   "$callback" "$REPO_ROOT/starship/starship.toml" "$DOTFILES_CONFIG_HOME/starship.toml"

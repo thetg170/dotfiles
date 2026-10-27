@@ -21,6 +21,7 @@ brew "eza"
 
 # These casks are already installed on this Mac.
 cask "ghostty"
+cask "hammerspoon" # Global AnkiConnect review hotkeys without changing focus
 cask "font-ubuntu-mono-nerd-font"
 cask "karabiner-elements"
 cask "maccy"
