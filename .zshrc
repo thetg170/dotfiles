@@ -40,6 +40,7 @@ else
 fi
 export VISUAL="${VISUAL:-$EDITOR}"
 export PAGER="${PAGER:-less}"
+export BAT_THEME=gruvbox-dark
 bindkey -e
 
 # Navigation
@@ -51,19 +52,6 @@ alias pdev="cd ~/Developer/Personal"
 alias box="cd ~/Developer/Sandbox"
 dev() {
   "$DOTFILES_DIR/scripts/dev.sh" "$@"
-}
-airead() {
-  codex --sandbox read-only "$@"
-}
-aireview() {
-  if (( $# == 0 )); then
-    codex review --uncommitted
-  elif (( $# == 1 )); then
-    codex review --base "$1"
-  else
-    print -u2 'Usage: aireview [base-branch]'
-    return 2
-  fi
 }
 
 # Git
@@ -92,13 +80,13 @@ fi
 
 # Ctrl+r: history; Ctrl+t: insert file paths; Alt+c: choose a directory.
 if (( $+commands[fzf] )); then
-  export FZF_DEFAULT_OPTS='--height=45% --layout=reverse --border --info=inline'
+  export FZF_DEFAULT_OPTS='--height=45% --layout=reverse --border --info=inline --color=dark,bg:#282828,bg+:#32302f,fg:#ebdbb2,fg+:#ebdbb2,hl:#b8bb26,hl+:#fabd2f,prompt:#83a598,pointer:#fe8019,marker:#b8bb26,spinner:#d3869b,header:#83a598,border:#504945,info:#928374,preview-bg:#282828,preview-fg:#ebdbb2'
   if (( $+commands[rg] )); then
     export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git" -g "!node_modules" -g "!.venv" -g "!__pycache__"'
     export FZF_DEFAULT_COMMAND="$FZF_CTRL_T_COMMAND"
   fi
   if (( $+commands[bat] )); then
-    export FZF_CTRL_T_OPTS='--preview "bat --color=always --style=numbers --line-range=:200 -- {}"'
+    export FZF_CTRL_T_OPTS='--preview "bat --theme=gruvbox-dark --color=always --style=numbers --line-range=:200 -- {}"'
   fi
   source <(fzf --zsh)
 fi

@@ -16,6 +16,9 @@ Personal macOS dotfiles repo living at `~/Developer/dotfiles`. All configs are *
 | `nvim/` | `~/.config/nvim` |
 | `ghostty/config` | `~/.config/ghostty/config` |
 | `ghostty/effects/` | `~/.config/ghostty/effects` |
+| `lgtm/config.toml` | `~/.config/lgtm/config.toml` |
+| `lazygit/config.yml` | `~/.config/lazygit/config.yml` and the macOS Application Support config |
+| `bat/config`, `starship/starship.toml` | `~/.config/bat/config`, `~/.config/starship.toml` |
 | `uv/uv.toml` | `~/.config/uv/uv.toml` |
 | `uv/python-version` | `~/.config/uv/.python-version` |
 
@@ -30,13 +33,34 @@ Built on [LazyVim](https://www.lazyvim.org) + [lazy.nvim](https://github.com/fol
 - `nvim/lua/config/options.lua` — vim options (tabs=4, relativenumber, clipboard=unnamedplus)
 - `nvim/lua/config/keymaps.lua` — custom keymaps (`<leader>` = Space)
 - `nvim/lua/plugins/` — local plugin overrides; each file returns a lazy.nvim spec table
-  - `colorscheme.lua` — Gruvbox soft/transparent (tokyo-night and catppuccin disabled)
-  - `training.lua` — `precognition.nvim` + `hardtime.nvim` to enforce vim motion habits
+  - `colorscheme.lua` — Gruvbox dark soft with an explicit background and italics disabled
+  - `training.lua` — `precognition.nvim` hints; `hardtime.nvim` is disabled
   - `indent.lua` — disables snacks.nvim indent guides
+  - `markdown.lua` — tunes the `lang.markdown` extra for reading: render-markdown on, markdownlint off (wrap/no-spell/no-autoformat live in `autocmds.lua`)
 
 ## tmux
 
 Prefix: `Ctrl+Space`. Copy mode uses Emacs keys. Reload config: `<prefix> r`.
+
+## Review workspace
+
+`scripts/dev.sh` (the `dev` command) builds one tmux session per project: window
+`review` runs `lgtm --pane <agent pane>` beside a plain shell for the agent, `edit`
+runs Neovim, `shell` is a plain shell. The agent pane id is stored in the session
+option `@dotfiles_agent_pane`; `nvim/lua/agent.lua` (`<leader>a`) reads it to type
+`path:line` references into that pane without pressing Enter. Shared review
+presets live in `lgtm/config.toml`. `make check-workflow` tests both without
+touching real tmux sessions.
+
+Projects with `.devcontainer/devcontainer.json` or `.devcontainer.json` run the
+`edit` window through `scripts/devcontainer.sh`; `--local` forces host Neovim.
+Container sessions use a `-dc` suffix. Share the Neovim config, but keep Linux
+plugins/parsers/lockfiles in their own Docker volume and never select the host
+`.venv` inside a container. `host_bridge.lua` and `devcontainer/bridge.mjs` carry
+clipboard operations and `Space a` references to the host without submitting.
+`dev --rebuild` refuses to replace a container while its edit window is open.
+New-project starter: `templates/devcontainer/devcontainer.json`. Editor tooling
+supports Debian/Ubuntu containers; `make setup-devcontainer` installs the host CLI.
 
 ## Python
 

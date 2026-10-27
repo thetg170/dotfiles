@@ -4,21 +4,12 @@ keymap("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 keymap("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit window" })
 keymap("n", "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
 
-keymap({ "n", "x" }, "<leader>a", "<nop>", { desc = "+AI context" })
-for suffix, entry in pairs({
-  y = { "context", "Copy code + path for AI" },
-  p = { "reference", "Copy file/line reference for AI" },
-  e = { "explain", "Copy code + explain prompt" },
-  r = { "review", "Copy code + review prompt" },
-}) do
-  local kind, description = entry[1], entry[2]
-  keymap("n", "<leader>a" .. suffix, function()
-    require("ai_context").copy(kind, false)
-  end, { desc = description })
-  keymap("x", "<leader>a" .. suffix, function()
-    require("ai_context").copy(kind, true)
-  end, { desc = description })
-end
+keymap("n", "<leader>a", function()
+  require("agent").send(false)
+end, { desc = "Send file:line to agent" })
+keymap("x", "<leader>a", function()
+  require("agent").send(true)
+end, { desc = "Send file:lines to agent" })
 
 keymap("n", "<leader>k", "<nop>", { desc = "+kata" })
 keymap("n", "<leader>kn", function()
@@ -45,4 +36,3 @@ end, { desc = "Toggle kata completion" })
 keymap("n", "<leader>kh", function()
   require("kata").toggle_hints()
 end, { desc = "Toggle motion hints" })
-keymap("n", "<leader>km", "<cmd>Hardtime report<cr>", { desc = "Hardtime motion report" })

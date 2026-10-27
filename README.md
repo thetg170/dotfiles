@@ -55,13 +55,15 @@ Script không thay thế Astro hiện tại của bạn.
 ## Lệnh quản lý
 
 Tra nhanh trong [COMMANDS.md](COMMANDS.md). Quy trình Neovim + tmux + AI nằm
-trong [WORKFLOW.md](WORKFLOW.md), gồm hỏi code theo selection và review trước commit.
+trong [WORKFLOW.md](WORKFLOW.md): lgtm đọc diff trực tiếp cạnh agent, hỏi theo `path:dòng`
+và review trước commit.
 
 | Lệnh tại thư mục repo | Công dụng |
 |---|---|
 | `make setup` | Cài dependency còn thiếu và tạo symlink |
 | `make setup-de` | Cài profile DE tùy chọn, giữ nguyên app đã có |
 | `make setup-python` | Thiết lập Python 3.12 mặc định và config uv |
+| `make setup-devcontainer` | Cài Dev Containers CLI, dùng với Docker/OrbStack |
 | `make dry-run` | Xem các link/backup dự kiến, chưa sửa file |
 | `make link` | Chỉ tạo symlink, không cài package |
 | `make check` | Kiểm tra command, plugin, symlink, shader và cú pháp config |
@@ -70,6 +72,14 @@ Link đã đúng sẽ được bỏ qua. File, thư mục hoặc link cũ đư�
 `<tên-file>.backup.<timestamp>-<pid>` ngay cạnh vị trí cũ trước khi tạo link mới.
 Để khôi phục, bỏ riêng symlink mới rồi chuyển bản backup về tên cũ.
 Không có script nào tự xóa backup.
+
+`dev <project>` tự mở Neovim trong container khi project có
+`.devcontainer/devcontainer.json` hoặc `.devcontainer.json`. Agent và lgtm vẫn
+chạy trên Mac; config Neovim dùng chung, plugin/cache Linux được tách riêng.
+Project thường tiếp tục dùng Neovim local. Dùng `dev --local <project>` để ép
+local; mẫu cho project mới nằm ở `templates/devcontainer/devcontainer.json`.
+Xem [workflow dev container](WORKFLOW.md#project-có-dev-container) về dependency,
+clipboard, `Space a` và rebuild.
 
 `make check` kiểm tra tmux trong server riêng, không reload hay đóng session đang dùng.
 Nó không đo hiệu năng GPU và không cài/nâng cấp plugin Neovim.
@@ -202,6 +212,22 @@ bằng một dấu cách không được lưu vào history. Không đặt secret
 Zsh là shell chính của Ghostty và tmux. `.bashrc`/`.bash_profile` được giữ lại cho
 Bash cũ; các tích hợp mới trong hướng dẫn này dành cho Zsh.
 
+## Bảng màu Gruvbox Dark
+
+Dùng cùng bảng màu: nền `#282828`, nền soft/selection `#32302f`, chữ `#ebdbb2`.
+Neovim host và dev container dùng chung `colorscheme.lua`: Gruvbox dark soft,
+nền được đặt rõ thay vì kế thừa, và giữ các nhóm italic đã tắt.
+Ghostty giữ `theme = Gruvbox Dark`; lgtm giữ `[theme] name = "gruvbox"`.
+
+Lazygit có config Gruvbox, bat dùng `gruvbox-dark`, fzf nhận màu từ
+`FZF_DEFAULT_OPTS` trong `.zshrc`. Starship dùng palette `gruvbox`, giữ layout
+prompt mặc định. Các công cụ dùng mã màu ANSI sẽ lấy bảng màu Gruvbox của Ghostty.
+
+`make link` cài các config; `make check` kiểm tra symlink, bat theme và palette
+Starship. Mở tab Zsh mới cho fzf/BAT_THEME, mở lại Neovim/lazygit/lgtm để nhận
+config mới. Ghostty reload bằng `Cmd+Shift+,`; dev container không cần rebuild
+khi chỉ đổi màu Neovim.
+
 ## Bản đồ symlink
 
 | Trong repo | Vị trí sử dụng |
@@ -213,6 +239,10 @@ Bash cũ; các tích hợp mới trong hướng dẫn này dành cho Zsh.
 | `nvim/` | `~/.config/nvim` |
 | `ghostty/config` | `~/.config/ghostty/config` |
 | `ghostty/effects/` | `~/.config/ghostty/effects` |
+| `lgtm/config.toml` | `~/.config/lgtm/config.toml` |
+| `lazygit/config.yml` | `~/.config/lazygit/config.yml` và `~/Library/Application Support/lazygit/config.yml` trên macOS |
+| `bat/config` | `~/.config/bat/config` |
+| `starship/starship.toml` | `~/.config/starship.toml` |
 | `uv/uv.toml` | `~/.config/uv/uv.toml` |
 | `uv/python-version` | `~/.config/uv/.python-version` |
 

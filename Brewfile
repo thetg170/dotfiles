@@ -14,6 +14,8 @@ brew "bash-completion" # Optional Bash 3.2 profile kept alongside Zsh
 brew "zoxide"
 brew "fzf"
 brew "lazygit"
+tap "kunkka19xx/tap"
+brew "kunkka19xx/tap/lgtm" # Live diff review beside the agent pane (pre-alpha)
 brew "bat"
 brew "eza"
 

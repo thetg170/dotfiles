@@ -7,7 +7,7 @@ tmux_check_dir=''
 ok() { printf 'OK      %s\n' "$*"; }
 fail() { printf 'FAIL    %s\n' "$*"; failed=1; }
 
-for tool in brew git gh zsh nvim tmux starship uv rg zoxide fzf lazygit bat eza; do
+for tool in brew git gh zsh nvim tmux lgtm starship uv rg zoxide fzf lazygit bat eza; do
   if command -v "$tool" >/dev/null 2>&1; then ok "$tool"; else fail "Missing command: $tool"; fi
 done
 
@@ -30,8 +30,20 @@ if [[ -n "$uv_bin" ]] && "$uv_bin" --version; then
 else
   fail 'uv runtime'
 fi
+if command -v lgtm >/dev/null 2>&1; then
+  if lgtm -v >/dev/null; then ok 'lgtm runtime'; else fail 'lgtm runtime'; fi
+fi
 if command -v codex >/dev/null 2>&1; then
   if codex --version >/dev/null; then ok 'codex runtime'; else fail 'codex runtime'; fi
+fi
+if command -v devcontainer >/dev/null 2>&1; then
+  if devcontainer --version >/dev/null; then ok 'Dev Containers CLI runtime'; else fail 'Dev Containers CLI runtime'; fi
+fi
+if command -v bat >/dev/null 2>&1; then
+  if bat --list-themes | /usr/bin/grep -qx 'gruvbox-dark'; then ok 'bat gruvbox-dark theme'; else fail 'bat gruvbox-dark theme missing'; fi
+fi
+if command -v starship >/dev/null 2>&1; then
+  if starship print-config palette | /usr/bin/grep -q 'palette = "gruvbox"'; then ok 'Starship Gruvbox palette'; else fail 'Starship Gruvbox palette'; fi
 fi
 
 check_link() {
@@ -48,6 +60,9 @@ for file in .zprofile .zshrc; do
 done
 for file in .bash_profile .bashrc scripts/*.sh; do
   if /bin/bash -n "$REPO_ROOT/$file"; then ok "$file syntax"; else fail "$file syntax"; fi
+done
+for file in devcontainer/*.sh; do
+  if /bin/sh -n "$REPO_ROOT/$file"; then ok "$file syntax"; else fail "$file syntax"; fi
 done
 
 omz_dir="${ZSH:-$HOME/.oh-my-zsh}"

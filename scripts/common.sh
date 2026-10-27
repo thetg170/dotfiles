@@ -15,6 +15,14 @@ dotfiles_links() {
   "$callback" "$REPO_ROOT/nvim" "$DOTFILES_CONFIG_HOME/nvim"
   "$callback" "$REPO_ROOT/ghostty/config" "$DOTFILES_CONFIG_HOME/ghostty/config"
   "$callback" "$REPO_ROOT/ghostty/effects" "$DOTFILES_CONFIG_HOME/ghostty/effects"
+  "$callback" "$REPO_ROOT/lgtm/config.toml" "$DOTFILES_CONFIG_HOME/lgtm/config.toml"
+  "$callback" "$REPO_ROOT/lazygit/config.yml" "$DOTFILES_CONFIG_HOME/lazygit/config.yml"
+  # Lazygit uses Application Support by default on macOS, even without XDG_CONFIG_HOME.
+  if [[ "$(uname -s)" == Darwin ]]; then
+    "$callback" "$REPO_ROOT/lazygit/config.yml" "$DOTFILES_TARGET_HOME/Library/Application Support/lazygit/config.yml"
+  fi
+  "$callback" "$REPO_ROOT/bat/config" "$DOTFILES_CONFIG_HOME/bat/config"
+  "$callback" "$REPO_ROOT/starship/starship.toml" "$DOTFILES_CONFIG_HOME/starship.toml"
   "$callback" "$REPO_ROOT/uv/uv.toml" "$DOTFILES_CONFIG_HOME/uv/uv.toml"
   "$callback" "$REPO_ROOT/uv/python-version" "$DOTFILES_CONFIG_HOME/uv/.python-version"
 }

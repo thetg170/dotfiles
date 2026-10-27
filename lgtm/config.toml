@@ -1,0 +1,29 @@
+# lgtm, linked to ~/.config/lgtm/config.toml. Every key: https://noah-code.com/docs/lgtm
+# A project can override any key in its own .lgtm/config.toml.
+
+[ui]
+icons = "nerd"        # UbuntuMono Nerd Font in Ghostty
+comments = "inline"   # the remark under its line, not only a gutter dot
+
+[theme]
+name = "gruvbox"      # matches Ghostty, tmux and Neovim
+
+[review]
+# Lockfiles stay visible on purpose: dependency changes are part of the review.
+# Add generated, tracked files here per project, e.g. ["**/*_pb2.py"].
+ignore = []
+
+# Ctrl-i in the compose box, or Space a to open with this list. Inserted at the
+# caret after the file:line reference, so they read as one message.
+[presets]
+explain = "Read only, do not edit. Explain inputs, outputs, side effects, callers and error cases; trace one example input. Separate confirmed behaviour from assumptions."
+review = "Read only, do not edit. Look for concrete bugs, regressions and missing tests here and in callers. Give file:line, impact and a reproducer or test idea; skip style."
+why = "Why this approach? What did you rule out?"
+test = "Add a regression test that fails without this change."
+revert = "Revert this part, keep the rest."
+idempotent = "If this batch runs twice, does it write duplicates?"
+checkpoint = "What happens if the sink write succeeds but the checkpoint commit fails?"
+contract = "How does this handle nulls, missing fields, a new schema, timezones and decimals?"
+join = "Can this join multiply rows, or this filter drop valid records?"
+memory = "Does this pull a whole dataset into memory (collect, toPandas, reading every file)?"
+counts = "Are read, written and rejected counts logged so they can be reconciled?"

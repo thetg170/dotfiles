@@ -27,6 +27,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  lockfile = vim.env.DOTFILES_DEVCONTAINER == "1" and (vim.fn.stdpath("state") .. "/lazy-lock.json")
+    or (vim.fn.stdpath("config") .. "/lazy-lock.json"),
   spec = {
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     { import = "plugins" },

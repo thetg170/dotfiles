@@ -6,7 +6,19 @@ return {
     priority = 1000,
     opts = {
       contrast = "soft",
-      transparent_mode = true,
+      transparent_mode = false,
+      italic = {
+        strings = false,
+        emphasis = false,
+        comments = false,
+        operators = false,
+        folds = false,
+      },
+      overrides = {
+        Comment = { fg = "#928374", bg = "NONE", italic = false },
+        ["@string.documentation"] = { link = "Comment" },
+        ["@string.documentation.python"] = { link = "Comment" },
+      },
     },
   },
   {

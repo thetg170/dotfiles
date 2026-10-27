@@ -16,9 +16,17 @@ Mở tab Zsh mới sau khi đổi config, hoặc chạy `source ~/.zshrc`.
 | `dev` | Mở hoặc quay lại tmux workspace cho thư mục hiện tại |
 | `dev ~/Developer/Personal/unitee` | Mở workspace theo đường dẫn |
 | `dev unitee` | Tìm thư mục bằng zoxide rồi mở workspace |
+| `dev --local <project>` | Mở Neovim trên Mac dù project có dev container |
+| `dev --rebuild <project>` | Build lại dev container sau khi đã thoát Neovim |
 
-`dev` tạo window `dev` (Neovim + Codex), `check`, `logs`. Gọi lại sẽ dùng session
-cũ, không mở thêm editor/AI. Cần có `tmux`, `nvim`, Codex đã cài và đăng nhập.
+`dev` tạo window `review` (lgtm + shell cho agent), `edit` (Neovim), `shell`. Gọi
+lại sẽ dùng session cũ. Cần có `tmux`, `nvim` và `lgtm`. Ở pane bên phải của
+`review`, tự chạy agent: `codex`, `codex resume`, `claude` hoặc `claude --continue`.
+
+Có `.devcontainer/devcontainer.json` hoặc `.devcontainer.json` thì window `edit`
+chạy trong container, dùng config Neovim chung và plugin/cache Linux riêng.
+Cần Docker/OrbStack và `make setup-devcontainer` một lần. `Space a` và clipboard
+vẫn hoạt động qua host bridge. Xem [workflow container](WORKFLOW.md#project-có-dev-container).
 
 ## File và tìm kiếm
 
@@ -50,18 +58,15 @@ Leader là `Space`. Các phím dưới dùng trong Normal mode nếu không ghi 
 | `V`, rồi `j/k` | Chọn các dòng code |
 | `vip` | Chọn đoạn văn/code phân cách bởi dòng trống; không đảm bảo là cả hàm |
 | `"+y` trong Visual mode | Copy code thuần vào clipboard macOS |
-| `Space ay` | Copy path + khoảng dòng + code cho AI |
-| `Space ap` | Copy path + khoảng dòng, không kèm code |
-| `Space ae` | Copy context kèm prompt giải thích, chỉ đọc |
-| `Space ar` | Copy context kèm prompt review, chỉ đọc |
+| `Space a` | Gửi `path:dòng` (Visual: `path:dòng-dòng`) vào ô nhập agent, chuyển sang pane đó |
+| `Space um` | Markdown: bật/tắt bản render trong buffer |
+| `Space cp` | Markdown: preview trong trình duyệt |
 | `Space gg` | Mở lazygit theo cấu hình LazyVim |
 | `:checktime` | Kiểm tra và nạp thay đổi trên đĩa nếu buffer không có thay đổi riêng |
 
-Các mapping `Space a...` dùng được ở Normal và Visual mode. Normal lấy dòng hiện
-tại; Visual lấy toàn bộ các dòng được selection chạm tới, kể cả chọn ngược hoặc
-chọn dạng cột. Snippet lấy từ buffer, có ghi chú nếu chưa lưu. Mapping không gửi
-AI, không đổi pane, không sửa/lưu file. Với `Space ap`, cần `:w` trước khi nhờ AI
-đọc nội dung trên đĩa. Xem thêm [nvim.md](nvim.md).
+`Space a` không bấm Enter, không sửa hay lưu file. Buffer chưa lưu thì từ chối
+(`:w` trước), vì agent đọc file trên đĩa. Ngoài workspace `dev` thì tham chiếu
+được copy vào clipboard. Xem thêm [nvim.md](nvim.md).
 
 ## tmux
 
@@ -82,23 +87,41 @@ Prefix là `Ctrl+Space`: nhấn rồi thả, sau đó bấm phím tiếp theo.
 | `dev <project>` | Quay lại workspace project bằng đường dẫn hoặc tên zoxide |
 | Prefix rồi `r` | Reload tmux config |
 
-Phím của Neovim và prefix tmux là hai lớp khác nhau: `Space ae` dùng trong
+Phím của Neovim, lgtm và prefix tmux là ba lớp khác nhau: `Space a` dùng trong
 Neovim; `Ctrl+Space` rồi `l` dùng để chuyển pane. Xem thêm [tmux.md](tmux.md).
 
-## AI và review
+## lgtm (window `review`)
 
-| Lệnh | Công dụng |
+Bảng đầy đủ: bấm `?` trong lgtm, hoặc [tài liệu lgtm](https://noah-code.com/docs/lgtm).
+
+| Phím/lệnh | Công dụng |
 |---|---|
-| `codex` | Mở phiên AI trong project hiện tại |
-| `codex resume` | Chọn phiên cũ để tiếp tục |
-| `airead` | Mở Codex với sandbox read-only để hỏi/đọc code |
-| `aireview` | Review thay đổi chưa commit, gồm staged/unstaged/untracked |
-| `aireview main` | Review nhánh so với `main` |
-| `aireview origin/main` | Review so với ref remote đang có trên máy |
+| `j/k`, `]h` `[h`, `]f` `[f` | Di chuyển, hunk kế/trước, file kế/trước |
+| `/`, `*` | Tìm trong toàn bộ review, tìm từ dưới con trỏ |
+| `Enter` / `V` rồi `Enter` | Compose câu hỏi kèm `path:dòng`, gõ vào ô nhập agent (không Enter) |
+| `Ctrl-i` trong compose | Chèn preset: `explain`, `review`, `checkpoint`, `contract`... |
+| `Space c` / `Space gc` | Ghi nhận xét / đề xuất sửa trên dòng |
+| `Space lc` | Danh sách nhận xét |
+| `Ctrl-s` | Ghi `.lgtm/review-N.md`, báo agent, đặt mark |
+| `]m` `[m` | Dòng mới xuất hiện từ sau mark |
+| `]w` `[w` | Test bị xoá, `skip` mới, assertion giảm |
+| `Space lt`, `]t` `[t` | Các lượt agent đã ghi; `R` khôi phục file từ lượt đó, `u` hoàn tác |
+| `Space f` / `Space F` | File đã đổi / mọi file trong project |
+| `Space e` | Mở dòng hiện tại trong Neovim (`$EDITOR`) |
+| `Space t` | Chọn pane nhận tham chiếu |
+| `-`, `zw`, `Tab` | Side-by-side ↔ một cột, wrap, ẩn khung |
+| `:config edit`, `:q` | Sửa config (nạp lại ngay), thoát |
 
-`aireview` và `airead` chạy trong shell, không gõ vào ô chat Codex. Trong chat có
-thể dùng `/plan` để lên kế hoạch và `/review` để chọn chế độ review. Ref remote
-không tự cập nhật: fetch khi bạn cần so với trạng thái mới nhất.
+| Lệnh shell | Công dụng |
+|---|---|
+| `lgtm` | Review working tree so với `HEAD`, gồm file untracked |
+| `lgtm diff main` | Review cả nhánh, gồm phần chưa commit |
+| `lgtm --pr 123` | Review pull request (cần `gh`) |
+| `lgtm status` | Bảng file đã đổi, +/−, thời gian ghi |
+| `lgtm risk` | Kiểm tra test bị làm yếu, exit 1 nếu có |
+
+Review lần hai bằng AI: `/review` trong Codex, `/code-review` trong Claude Code.
+Agent chỉ đọc: `codex --sandbox read-only` hoặc `claude --permission-mode plan`.
 
 ## Git
 
@@ -112,8 +135,8 @@ không tự cập nhật: fetch khi bạn cần so với trạng thái mới nh�
 | `git diff --check` | Kiểm tra lỗi whitespace trong diff tracked |
 
 Trong lazygit: `Space` stage/unstage file, `c` commit trong panel Files, `P` push,
-`p` pull, `?` xem phím theo panel, `q` thoát. Review file mới ở lazygit hoặc qua
-`aireview`; đừng chỉ nhìn `git diff` rồi bỏ sót chúng.
+`p` pull, `?` xem phím theo panel, `q` thoát. `git diff` bỏ sót file untracked;
+lgtm và `lgtm status` thì không.
 
 ## Python
 
@@ -124,7 +147,7 @@ Trong lazygit: `Space` stage/unstage file, `c` commit trong panel Files, `P` pus
 | `uv add pandas` | Thêm dependency runtime |
 | `uv add --dev pytest-cov` | Thêm dev dependency |
 | `uv run --locked python main.py` | Chạy script trong môi trường project |
-| `make check` | Với template: lint, typecheck, test, kiểm tra format |
+| `make check` | Với template: lint, typecheck, test, format, `lgtm risk` |
 | `make format` | Với template: format code |
 | `uv tool list` | Xem CLI cài riêng qua uv |
 
@@ -144,7 +167,7 @@ btop
 lsof -nP -iTCP:8080 -sTCP:LISTEN
 ```
 
-Chạy Compose tại project có cấu hình phù hợp. Window `logs` của workspace không
+Chạy Compose tại project có cấu hình phù hợp. Window `shell` của workspace không
 tự khởi động service; bạn chọn lệnh theo project. Không có alias tự xóa volume.
 
 ## Quản lý dotfiles
@@ -154,7 +177,8 @@ tự khởi động service; bạn chọn lệnh theo project. Không có alias 
 | `make setup` | Cài dependency cơ bản, link config, setup Python và kiểm tra |
 | `make setup-de` | Cài profile app/DE tùy chọn |
 | `make setup-python` | Setup Python 3.12 và config uv |
+| `make setup-devcontainer` | Cài Dev Containers CLI cho chế độ editor trong Docker |
 | `make dry-run` | Xem link/backup dự kiến |
 | `make link` | Tạo link, backup file cũ nếu cần |
 | `make check` | Kiểm tra setup, runtime và cú pháp |
-| `make check-workflow` | Thử mapping AI và workspace bằng clipboard/AI giả lập, server tmux riêng |
+| `make check-workflow` | Thử `Space a` với tmux giả lập và bố cục `dev` trên server tmux riêng |

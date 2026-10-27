@@ -1,4 +1,4 @@
-.PHONY: setup setup-de setup-python link dry-run check check-workflow
+.PHONY: setup setup-de setup-python setup-devcontainer link dry-run check check-workflow
 
 setup:
 	./scripts/bootstrap.sh
@@ -11,6 +11,9 @@ setup-python:
 	./scripts/link.sh
 	./scripts/setup-python.sh
 
+setup-devcontainer:
+	npm install -g @devcontainers/cli@0.89.0
+
 link:
 	./scripts/link.sh
 
@@ -21,5 +24,6 @@ check:
 	./scripts/check.sh
 
 check-workflow:
-	nvim --headless -u NONE -l tests/ai_context.lua
+	nvim --headless -u NONE -l tests/agent.lua
 	/bin/bash tests/workspace.sh
+	node tests/host_bridge.mjs

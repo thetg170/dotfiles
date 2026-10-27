@@ -1,0 +1,6 @@
+{
+  "name": "Project development",
+  "image": "python:3.13-slim-bookworm",
+  "remoteUser": "root",
+  "userEnvProbe": "none"
+}

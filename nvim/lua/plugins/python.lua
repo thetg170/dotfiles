@@ -1,4 +1,7 @@
 local function project_executable(root, name)
+  if vim.env.DOTFILES_DEVCONTAINER == "1" then
+    return
+  end
   if type(root) ~= "string" then
     return
   end
@@ -28,9 +31,11 @@ return {
     opts = {
       servers = {
         basedpyright = {
+          mason = vim.env.DOTFILES_DEVCONTAINER ~= "1",
           cmd = server_command("basedpyright-langserver", { "--stdio" }),
           before_init = function(_, config)
-            local python = project_executable(config.root_dir, "python")
+            local python = vim.env.DOTFILES_DEVCONTAINER == "1" and vim.fn.exepath("python3")
+              or project_executable(config.root_dir, "python")
             if python then
               config.settings = config.settings or {}
               config.settings.python = config.settings.python or {}
@@ -39,6 +44,7 @@ return {
           end,
         },
         ruff = {
+          mason = vim.env.DOTFILES_DEVCONTAINER ~= "1",
           cmd = server_command("ruff", { "server" }),
         },
       },
@@ -47,6 +53,9 @@ return {
   {
     "stevearc/conform.nvim",
     opts = function(_, opts)
+      if vim.env.DOTFILES_DEVCONTAINER == "1" then
+        return
+      end
       opts.formatters = opts.formatters or {}
       for _, name in ipairs({ "ruff_format", "ruff_fix", "ruff_organize_imports" }) do
         opts.formatters[name] = vim.tbl_deep_extend("force", opts.formatters[name] or {}, {

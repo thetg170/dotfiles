@@ -2,8 +2,11 @@
 
 **Prefix = `Ctrl+Space`**
 
-`dev [đường-dẫn-hoặc-tên-zoxide]` mở workspace project với Neovim + Codex và hai
-window shell `check`, `logs`. Gọi lại để quay về session cũ.
+`dev [đường-dẫn-hoặc-tên-zoxide]` mở workspace project: window `review` (lgtm bên
+trái, shell cho agent bên phải), `edit` (Neovim), `shell`. Tự mở hoặc resume agent
+ở pane phải của `review`. Gọi lại để quay về session cũ.
+Nếu project có devcontainer.json, window `edit` chạy Neovim trong container;
+session mang hậu tố `-dc`. `dev --local <project>` dùng editor trên Mac.
 Xem [WORKFLOW.md](WORKFLOW.md) và [COMMANDS.md](COMMANDS.md).
 
 ---

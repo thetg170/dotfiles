@@ -2,18 +2,34 @@
 
 **Leader = `Space`**
 
-## AI context
+## Agent
 
-| Key (Normal hoặc Visual) | Action |
+| Key | Action |
 |---|---|
-| `<leader>ay` | Copy path + line range + code |
-| `<leader>ap` | Copy reference, không kèm code |
-| `<leader>ae` | Copy context + prompt giải thích chỉ đọc |
-| `<leader>ar` | Copy context + prompt review chỉ đọc |
+| `<leader>a` | Gửi `path:dòng` (Visual: `path:dòng-dòng`) vào ô nhập agent và chuyển sang pane đó |
 
-Normal dùng dòng hiện tại; Visual dùng các dòng đang chọn. Copy vào clipboard
-macOS, không gửi AI hoặc đổi pane. Chuyển bằng tmux prefix rồi `l`, paste `Cmd+v`,
-xem lại và gửi. [Workflow đầy đủ](WORKFLOW.md).
+Không bấm Enter, không sửa hay lưu file. Buffer chưa lưu thì từ chối (`:w`
+trước). Ngoài workspace `dev` thì copy tham chiếu vào clipboard. Câu hỏi soạn sẵn
+(explain, review, checklist DE) nằm ở preset của lgtm. [Workflow đầy đủ](WORKFLOW.md).
+
+---
+
+## Markdown
+
+Extra `lang.markdown` của LazyVim, chỉnh trong `plugins/markdown.lua` và
+`config/autocmds.lua`. Mở file `.md` là thấy bản đã render ngay trong buffer:
+heading, bảng, code block, checklist, link. Dòng có con trỏ hiện Markdown gốc để sửa
+cho chính xác.
+
+| Key | Action |
+|---|---|
+| `<leader>um` | Bật/tắt render (xem Markdown gốc) |
+| `<leader>cp` | Preview trong trình duyệt, cuộn theo con trỏ |
+| `<leader>ss` | Nhảy tới heading (symbol từ marksman) |
+| `gd` trên link `[..](file.md#heading)` | Mở file/heading được link tới |
+
+Với Markdown: tự xuống dòng theo từ, tắt spellcheck tiếng Anh, không format khi lưu
+và không lint. Cần format thì `<leader>cf`.
 
 ---
 
