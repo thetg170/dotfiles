@@ -25,5 +25,6 @@ check:
 
 check-workflow:
 	nvim --headless -u NONE -l tests/agent.lua
+	nvim --headless -u NONE -l tests/python_diagnostics.lua
 	/bin/bash tests/workspace.sh
 	node tests/host_bridge.mjs

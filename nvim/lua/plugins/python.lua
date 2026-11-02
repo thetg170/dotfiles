@@ -33,6 +33,10 @@ return {
         basedpyright = {
           mason = vim.env.DOTFILES_DEVCONTAINER ~= "1",
           cmd = server_command("basedpyright-langserver", { "--stdio" }),
+          handlers = {
+            ["textDocument/publishDiagnostics"] = require("python_diagnostics").publish,
+            ["textDocument/diagnostic"] = require("python_diagnostics").document,
+          },
           settings = {
             basedpyright = {
               analysis = { typeCheckingMode = "standard" },
