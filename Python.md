@@ -93,6 +93,19 @@ language server và Ruff trong `.venv`, fallback về executable của editor n�
 Ruff formatter cũng ưu tiên `.venv/bin/ruff`. Nếu vừa tạo/thay môi trường khi
 editor đang mở, restart LSP hoặc mở lại Neovim.
 
+Khi lưu Python, Conform chạy Ruff sắp xếp import rồi format; không tự chạy toàn
+bộ lint fixes. Dùng code action để chọn sửa lint khi cần. Ruff phụ trách organize
+imports; basedpyright giữ completion, navigation và kiểm tra type.
+
+Editor mặc định dùng type checking `basic`, chỉ báo diagnostics cho file đang mở.
+Cấu hình trong `pyproject.toml` hoặc `pyrightconfig.json` của project được ưu tiên
+nếu muốn dùng `standard`/`strict`. `make typecheck` vẫn kiểm tra toàn bộ phạm vi
+project đã cấu hình. Diagnostics giữ dấu ở lề và gạch chân, tắt chữ cuối dòng;
+Python tắt inlay hints mặc định. Dùng `[d`, `]d`, `<leader>cd` để xem lỗi.
+
+Template format ở 100 ký tự nhưng bỏ lint `E501`, vì formatter không thể chia mọi
+chuỗi dài (ví dụ SQL). Những project cũ giữ nguyên quy tắc lint riêng.
+
 Template có `.vscode/settings.json` và extension recommendations cho Python,
 basedpyright, Ruff. Cài các extension được đề xuất, disable Pylance cho workspace
 để tránh hai language server Python cùng chạy. Nếu VS Code nhớ interpreter cũ,

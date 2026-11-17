@@ -26,9 +26,26 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      diagnostics = {
+        virtual_text = false,
+        virtual_lines = false,
+      },
+      inlay_hints = {
+        exclude = { "vue", "python" },
+      },
       servers = {
         basedpyright = {
           cmd = server_command("basedpyright-langserver", { "--stdio" }),
+          settings = {
+            basedpyright = {
+              disableOrganizeImports = true,
+              analysis = {
+                -- Project configuration can opt into stricter checking.
+                typeCheckingMode = "basic",
+                diagnosticMode = "openFilesOnly",
+              },
+            },
+          },
           before_init = function(_, config)
             local python = project_executable(config.root_dir, "python")
             if python then
@@ -47,6 +64,8 @@ return {
   {
     "stevearc/conform.nvim",
     opts = function(_, opts)
+      opts.formatters_by_ft = opts.formatters_by_ft or {}
+      opts.formatters_by_ft.python = { "ruff_organize_imports", "ruff_format" }
       opts.formatters = opts.formatters or {}
       for _, name in ipairs({ "ruff_format", "ruff_fix", "ruff_organize_imports" }) do
         opts.formatters[name] = vim.tbl_deep_extend("force", opts.formatters[name] or {}, {
