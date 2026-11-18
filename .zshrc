@@ -53,6 +53,7 @@ alias box="cd ~/Developer/Sandbox"
 dev() {
   "$DOTFILES_DIR/scripts/dev.sh" "$@"
 }
+source "$DOTFILES_DIR/codex/shell.zsh"
 
 # Git
 alias gst="git status"
@@ -104,3 +105,7 @@ command -v starship &>/dev/null && eval "$(starship init zsh)"
 if [[ -r "$HOME/.zshrc.local" ]]; then
   source "$HOME/.zshrc.local"
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/tranthe/.local/bin:$PATH"

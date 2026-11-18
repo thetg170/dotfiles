@@ -132,3 +132,7 @@ export PYSPARK_PYTHON=python3
 export SPARK_HOME=/opt/spark/spark-3.5.2-bin-hadoop3
 export PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH"
 . "$HOME/.cargo/env"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/tranthe/.local/bin:$PATH"

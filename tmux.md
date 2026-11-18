@@ -48,6 +48,7 @@ Xem [WORKFLOW.md](WORKFLOW.md) và [COMMANDS.md](COMMANDS.md).
 | `prefix h/j/k/l` | Move between panes |
 | `prefix o` | Cycle to next pane |
 | `prefix ;` | Last pane |
+| `prefix S` (`Shift+s`) | Swap with next pane; exchanges left/right when there are two panes |
 | `prefix z` | Zoom/unzoom pane |
 | `prefix x` | Kill pane (confirm) |
 | `prefix !` | Break pane into new window |

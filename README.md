@@ -235,6 +235,7 @@ khi chỉ đổi màu Neovim.
 | `.zprofile`, `.zshrc` | `~/.zprofile`, `~/.zshrc` |
 | `.bash_profile`, `.bashrc` | `~/.bash_profile`, `~/.bashrc` |
 | `.tmux.conf` | `~/.tmux.conf` |
+| `codex/dotfiles.config.toml` | `~/.codex/dotfiles.config.toml` |
 | `.vim/.vimrc` | `~/.vimrc` |
 | `nvim/` | `~/.config/nvim` |
 | `ghostty/config` | `~/.config/ghostty/config` |
@@ -249,6 +250,17 @@ khi chỉ đổi màu Neovim.
 Nếu đã đặt `XDG_CONFIG_HOME`, script dùng thư mục đó thay cho `~/.config`.
 `DOTFILES_TARGET_HOME` và `DOTFILES_CONFIG_HOME` có thể trỏ tới thư mục tạm để
 thử script tạo link mà không chạm config đang dùng.
+
+### Phím tắt Codex
+
+`Alt+Shift+↑` tăng reasoning effort; `Alt+Shift+↓` giảm effort.
+`make link` symlink profile `dotfiles`. Hàm Zsh `codex` tự truyền
+`--profile dotfiles` khi chạy `codex`, `codex resume` hoặc `codex fork`.
+Nếu truyền `--profile`/`-p` riêng, hàm giữ lựa chọn của bạn.
+`~/.codex/config.toml` vẫn giữ các thiết lập riêng của máy; không thêm khóa
+`profile` vì Codex 0.166 không hỗ trợ khóa đó. Chạy `source ~/.zshrc` sau setup.
+Ngoài Zsh, dùng `codex --profile dotfiles resume` để chọn cùng phím tắt.
+Profile dùng cơ chế [cấu hình Codex](https://learn.chatgpt.com/docs/config-file/config-basic).
 
 ## Ghostty, tmux và Karabiner
 

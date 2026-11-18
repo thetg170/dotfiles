@@ -18,7 +18,7 @@ shell-integration = zsh
 macos-option-as-alt = true
 
 # For transparency
-background-opacity = 0.88
+background-opacity = 0.85
 
 # Cursor preferences
 cursor-style = "bar"

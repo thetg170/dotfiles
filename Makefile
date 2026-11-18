@@ -24,6 +24,7 @@ check:
 	./scripts/check.sh
 
 check-workflow:
+	python3 tests/codex_config.py
 	nvim --headless -u NONE -l tests/agent.lua
 	nvim --headless -u NONE -l tests/python_diagnostics.lua
 	/bin/bash tests/workspace.sh

@@ -1,0 +1,12 @@
+model = "gpt-6-luna"
+model_reasoning_effort = "medium"
+# Shared keyboard shortcuts. Machine-specific settings stay in ~/.codex/config.toml.
+[tui.keymap.chat]
+increase_reasoning_effort = "alt-shift-up"
+decrease_reasoning_effort = "alt-shift-down"
+
+[projects."/Users/tranthe/Developer/Personal/de-learning-lab"]
+trust_level = "trusted"
+
+[projects."/Users/tranthe/Developer/Personal/ev-fleet-anomaly"]
+trust_level = "trusted"

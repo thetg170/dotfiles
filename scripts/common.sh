@@ -6,6 +6,7 @@ DOTFILES_CONFIG_HOME="${DOTFILES_CONFIG_HOME:-${XDG_CONFIG_HOME:-$DOTFILES_TARGE
 
 dotfiles_links() {
   local callback="$1"
+  "$callback" "$REPO_ROOT/codex/dotfiles.config.toml" "$DOTFILES_TARGET_HOME/.codex/dotfiles.config.toml"
   "$callback" "$REPO_ROOT/.zprofile" "$DOTFILES_TARGET_HOME/.zprofile"
   "$callback" "$REPO_ROOT/.zshrc" "$DOTFILES_TARGET_HOME/.zshrc"
   "$callback" "$REPO_ROOT/.bash_profile" "$DOTFILES_TARGET_HOME/.bash_profile"
