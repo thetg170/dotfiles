@@ -29,6 +29,13 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      diagnostics = {
+        virtual_text = false,
+        virtual_lines = false,
+      },
+      inlay_hints = {
+        exclude = { "vue", "python" },
+      },
       servers = {
         basedpyright = {
           mason = vim.env.DOTFILES_DEVCONTAINER ~= "1",
@@ -39,7 +46,12 @@ return {
           },
           settings = {
             basedpyright = {
-              analysis = { typeCheckingMode = "standard" },
+              disableOrganizeImports = true,
+              analysis = {
+                -- Project configuration can opt into stricter checking.
+                typeCheckingMode = "basic",
+                diagnosticMode = "openFilesOnly",
+              },
             },
           },
           before_init = function(_, config)
@@ -62,6 +74,8 @@ return {
   {
     "stevearc/conform.nvim",
     opts = function(_, opts)
+      opts.formatters_by_ft = opts.formatters_by_ft or {}
+      opts.formatters_by_ft.python = { "ruff_organize_imports", "ruff_format" }
       if vim.env.DOTFILES_DEVCONTAINER == "1" then
         return
       end

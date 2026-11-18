@@ -124,7 +124,7 @@ buffer, completion starts disabled; `<leader>kc` enables it temporarily while
 
 ---
 
-## Motion (enforced by hardtime.nvim)
+## Motion (Hardtime enforcement disabled by default)
 
 | Key | Action |
 |---|---|
