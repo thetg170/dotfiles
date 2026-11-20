@@ -5,7 +5,7 @@ return {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     opts = {
-      contrast = "soft",
+      contrast = "",
       transparent_mode = false,
       italic = {
         strings = false,
