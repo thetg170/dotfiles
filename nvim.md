@@ -100,6 +100,30 @@ buffer, completion starts disabled; `<leader>kc` enables it temporarily while
 
 ---
 
+## Run & Debug Python
+
+| Key | Action |
+|---|---|
+| `<leader>rp` | Run current Python file (unbuffered logs + exit status) |
+| `<leader>ra` | Run current Python file with CLI args |
+| `<leader>rt` | Run `pytest -v --tb=short` (current test file or project) |
+| `<leader>rl` | Re-run last Python command |
+| `<leader>db` | Toggle breakpoint |
+| `<leader>dB` | Conditional breakpoint |
+| `<leader>dc` | Start / Continue debug |
+| `<leader>dO` | Step Over |
+| `<leader>di` | Step Into |
+| `<leader>do` | Step Out |
+| `<leader>dt` | Terminate debug |
+| `<leader>de` | Eval expression under cursor |
+| `<leader>du` | Toggle / close DAP UI |
+
+Runner and debugger automatically prefer the project's `.venv/bin/python`.
+DAP UI stays open after a debug session ends so you can read final logs/tracebacks;
+press `<leader>du` to close it.
+
+---
+
 ## Git
 
 | Key | Action |

@@ -87,4 +87,64 @@ return {
       end
     end,
   },
+  {
+    "mfussenegger/nvim-dap-python",
+    opts = function()
+      local dap_python = require("dap-python")
+      dap_python.test_runner = "pytest"
+      dap_python.resolve_python = function()
+        local file = vim.api.nvim_buf_get_name(0)
+        local start = file ~= "" and file or vim.uv.cwd()
+        local root = vim.fs.root(start, { "pyproject.toml", ".venv", ".git" }) or vim.uv.cwd()
+        local venv_python = project_executable(root, "python")
+        if venv_python then
+          return venv_python
+        end
+        if vim.env.VIRTUAL_ENV and vim.env.VIRTUAL_ENV ~= "" then
+          local active = vim.fs.joinpath(vim.env.VIRTUAL_ENV, "bin", "python")
+          if vim.fn.executable(active) == 1 then
+            return active
+          end
+        end
+        return vim.fn.exepath("python3") ~= "" and vim.fn.exepath("python3") or "python"
+      end
+    end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    opts = {
+      layouts = {
+        {
+          elements = {
+            { id = "scopes", size = 0.45 },
+            { id = "breakpoints", size = 0.2 },
+            { id = "stacks", size = 0.2 },
+            { id = "watches", size = 0.15 },
+          },
+          size = 40,
+          position = "left",
+        },
+        {
+          elements = {
+            { id = "console", size = 0.65 },
+            { id = "repl", size = 0.35 },
+          },
+          size = 14,
+          position = "bottom",
+        },
+      },
+    },
+    config = function(_, opts)
+      local dap = require("dap")
+      local dapui = require("dapui")
+      dapui.setup(opts)
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open({})
+      end
+      -- Keep DAP UI open after exit so final logs and tracebacks remain visible.
+      -- Close manually with <leader>du.
+      dap.listeners.before.event_terminated["dapui_config"] = nil
+      dap.listeners.before.event_exited["dapui_config"] = nil
+    end,
+  },
 }
