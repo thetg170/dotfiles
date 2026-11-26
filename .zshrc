@@ -43,6 +43,12 @@ export PAGER="${PAGER:-less}"
 export BAT_THEME=gruvbox-dark
 bindkey -e
 
+# Match Neovim completion: Ctrl+y accepts, Ctrl+e dismisses suggestions.
+if (( ${+widgets[autosuggest-accept]} && ${+widgets[autosuggest-clear]} )); then
+  bindkey '^Y' autosuggest-accept
+  bindkey '^E' autosuggest-clear
+fi
+
 # Navigation
 typeset -g DOTFILES_DIR="${${(%):-%x}:A:h}"
 alias work="cd ~/work"
@@ -70,6 +76,22 @@ unalias pip 2>/dev/null
 pynew() {
   "$DOTFILES_DIR/scripts/new-python.sh" "$@"
 }
+
+expy() (
+  if [[ $# != 1 || ! "$1" =~ '^[a-z0-9]+(-[a-z0-9]+)*$' ]]; then
+    print -u2 'Usage: expy <exercise-slug>'
+    return 2
+  fi
+  local workspace exercise solution
+  workspace=$(exercism workspace) || return
+  exercise="$workspace/python/$1"
+  if [[ ! -f "$exercise/.exercism/config.json" ]]; then
+    exercism download --track=python --exercise="$1" || return
+  fi
+  cd -- "$exercise" || return
+  solution=$(python3 -c 'import json; print(json.load(open(".exercism/config.json"))["files"]["solution"][0])') || return
+  exec nvim -- "$solution"
+)
 
 # Keep the original ls/cat commands; use these when extra detail helps.
 if (( $+commands[eza] )); then

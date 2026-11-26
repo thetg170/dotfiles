@@ -38,6 +38,8 @@ vẫn hoạt động qua host bridge. Xem [workflow container](WORKFLOW.md#proje
 | `rg 'TODO'` | Tìm nội dung trong project |
 | `rg --files -g '*.py'` | Liệt kê file Python, tôn trọng `.gitignore` |
 | `Ctrl+r` | Tìm history, Enter chọn rồi kiểm tra command trước khi chạy |
+| `Ctrl+y` | Nhận toàn bộ gợi ý lệnh |
+| `Ctrl+e` | Ẩn gợi ý lệnh |
 | `Ctrl+t` | Chọn file, chèn đường dẫn vào dòng nhập |
 | `Option+c` | Chọn thư mục con để chuyển đến trong Ghostty |
 | `du -sh .` | Dung lượng thư mục hiện tại |

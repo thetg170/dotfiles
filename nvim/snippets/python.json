@@ -1,0 +1,7 @@
+{
+  "Python docstring": {
+    "prefix": "doc",
+    "body": "\"\"\"$0\"\"\"",
+    "description": "Insert a Python docstring"
+  }
+}

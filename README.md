@@ -148,6 +148,8 @@ Các phím này dùng trực tiếp tại dòng lệnh Zsh, **không cần tmux 
 | Phím | Cách dùng |
 |---|---|
 | `Ctrl+r` | Gõ một phần command cũ, chọn bằng mũi tên rồi Enter |
+| `Ctrl+y` | Nhận toàn bộ gợi ý lệnh màu xám |
+| `Ctrl+e` | Ẩn gợi ý lệnh, giữ nguyên nội dung đã gõ |
 | `Ctrl+t` | Chọn file và chèn đường dẫn vào dòng lệnh; Tab chọn nhiều file |
 | `Alt+c` / `Option+c` trong Ghostty | Chọn thư mục con và chuyển đến đó |
 | `Esc` hoặc `Ctrl+c` trong danh sách | Hủy tìm kiếm |
